@@ -1,13 +1,17 @@
 package learningmanagement.domain;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.PostPersist;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import learningmanagement.UserApplication;
-import learningmanagement.domain.UserRegistered;
 import lombok.Data;
 
 @Entity
@@ -59,30 +63,17 @@ public class User {
 
     //<<< Clean Arch / Port Method
     public static void suggestLecture(LectureSuggested lectureSuggested) {
-        //implement business logic here:
-
-        /** Example 1:  new item 
-        User user = new User();
-        repository().save(user);
-
-        */
-
-        /** Example 2:  finding and process
+       
         
-        // if lectureSuggested.userIdlectureId exists, use it
-        
-        // ObjectMapper mapper = new ObjectMapper();
-        // Map<Long, Object> lectureSuggestionMap = mapper.convertValue(lectureSuggested.getUserId(), Map.class);
-        // Map<Long, Object> lectureSuggestionMap = mapper.convertValue(lectureSuggested.getLectureId(), Map.class);
+        ObjectMapper mapper = new ObjectMapper();
+        Map<Long, Object> userMap = mapper.convertValue(lectureSuggested.getUserId(), Map.class);
 
-        repository().findById(lectureSuggested.get???()).ifPresent(user->{
+        repository().findById(Long.valueOf(userMap.get("id").toString())).ifPresent(user->{
             
-            user // do something
+            user.setSuggestionLecture(lectureSuggested.getSuggestionContent());
             repository().save(user);
 
-
-         });
-        */
+        });
 
     }
     //>>> Clean Arch / Port Method

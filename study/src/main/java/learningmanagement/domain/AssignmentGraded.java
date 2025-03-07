@@ -13,6 +13,6 @@ public class AssignmentGraded extends AbstractEvent {
     private Object studyId;
     private String assignment;
     private String submitContent;
-    private String submitScore;
+    private Integer submitScore;
     private String feedback;
 }

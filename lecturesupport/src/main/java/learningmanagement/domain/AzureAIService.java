@@ -66,11 +66,18 @@ public class AzureAIService {
             
             // API 응답 처리
             String[] parts = content.split("\\n\\n", 2);
-            String score = parts[0].split(": ")[1];
+            String scoreText = parts[0].split(": ")[1].trim();
             String feedback = parts[1];
             
+            // 점수가 소수점이 있는 경우 정수로 변환
+            double scoreDouble = Double.parseDouble(scoreText);
+            int scoreInt = (int) Math.round(scoreDouble);
+            
+            // 점수 범위 확인 (0-100)
+            scoreInt = Math.min(100, Math.max(0, scoreInt));
+            
             Map<String, String> result = new HashMap<>();
-            result.put("score", score);
+            result.put("score", String.valueOf(scoreInt));  // 정수 점수를 문자열로 변환
             result.put("feedback", feedback);
             return result;
         } catch (Exception e) {

@@ -61,29 +61,20 @@ public class Study {
 
     //<<< Clean Arch / Port Method
     public static void updateSubmitScore(AssignmentGraded assignmentGraded) {
-        //implement business logic here:
 
-        /** Example 1:  new item 
-        Study study = new Study();
-        repository().save(study);
-
-        */
-
-        /** Example 2:  finding and process
         
-        // if assignmentGraded.studyId exists, use it
         
-        // ObjectMapper mapper = new ObjectMapper();
-        // Map<Long, Object> assignmentMap = mapper.convertValue(assignmentGraded.getStudyId(), Map.class);
+        ObjectMapper mapper = new ObjectMapper();
+        Map<Long, Object> studyMap = mapper.convertValue(assignmentGraded.getStudyId(), Map.class);
 
-        repository().findById(assignmentGraded.get???()).ifPresent(study->{
+        repository().findById(Long.valueOf(studyMap.get("id").toString())).ifPresent(study->{
             
-            study // do something
+            study.setSubmitScore(assignmentGraded.getSubmitScore());
+            study.setFeedback(assignmentGraded.getFeedback());
             repository().save(study);
 
 
          });
-        */
 
     }
     //>>> Clean Arch / Port Method
