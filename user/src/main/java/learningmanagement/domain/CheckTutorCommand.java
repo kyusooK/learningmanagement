@@ -7,6 +7,5 @@ import lombok.Data;
 @Data
 public class CheckTutorCommand {
 
-    private Long id;
     private Boolean tutorApprove;
 }
