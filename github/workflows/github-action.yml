@@ -1,0 +1,76 @@
+name: github-action
+run-name: ${{ github.actor }} is out building GitHub Actions
+
+on:
+  push:
+    # Pattern matched against refs/tags
+    tags:        
+      - '**' 
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Build Maven Projects
+        run: |
+          mvn clean package -f ./lecture/pom.xml
+          mvn clean package -f ./user/pom.xml
+          mvn clean package -f ./study/pom.xml
+          mvn clean package -f ./lecturesupport/pom.xml
+
+      - name: Docker Build and push for Lecture
+        uses: docker/build-push-action@v4
+        with:
+          context: ./lecture
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/lecture:latest
+            ghcr.io/${{ github.repository }}/lecture:${{ github.ref_name }}
+            
+      - name: Docker Build and push for User
+        uses: docker/build-push-action@v4
+        with:
+          context: ./user
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/user:latest
+            ghcr.io/${{ github.repository }}/user:${{ github.ref_name }}
+            
+      - name: Docker Build and push for Study
+        uses: docker/build-push-action@v4
+        with:
+          context: ./study
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/study:latest
+            ghcr.io/${{ github.repository }}/study:${{ github.ref_name }}
+            
+      - name: Docker Build and push for Lecturesupport
+        uses: docker/build-push-action@v4
+        with:
+          context: ./lecturesupport
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/lecturesupport:latest
+            ghcr.io/${{ github.repository }}/lecturesupport:${{ github.ref_name }}
+            
