@@ -6,6 +6,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.*;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
 import learningmanagement.LecturesupportApplication;
 import learningmanagement.domain.AssignmentGraded;
 import lombok.Data;
@@ -40,34 +44,35 @@ public class Assignment {
 
     //<<< Clean Arch / Port Method
     public static void aiBasedGrade(Submitted submitted) {
-        //implement business logic here:
+        ObjectMapper mapper = new ObjectMapper();
+        Map<Long, Object> lectureMap = mapper.convertValue(submitted.getLectureId(), Map.class);
+        Map<Long, Object> userMap = mapper.convertValue(submitted.getUserId(), Map.class);
 
-        /** Example 1:  new item 
+
+        RestTemplate restTemplate = new RestTemplate();
+        String lectureUrl = "http :8082/lectrues" + lectureMap.get("id");
+        ResponseEntity<Map> lectureResponse = restTemplate.getForEntity(lectureUrl, Map.class);
+        String assignmentContent = lectureResponse.getBody().get("assignment").toString();
+
         Assignment assignment = new Assignment();
+        assignment.setAssignment(assignmentContent);
+        assignment.setSubmitContent(submitted.getAssignment());
+        
+        // AI 평가 수행
+        AzureAIService aiService = LecturesupportApplication.applicationContext.getBean(AzureAIService.class);
+        Map<String, String> evaluation = aiService.evaluateAssignment(
+            assignment.getAssignment(),
+            assignment.getSubmitContent()
+        );
+        
+        assignment.setSubmitScore(evaluation.get("score"));
+        assignment.setFeedback(evaluation.get("feedback"));
+        
         repository().save(assignment);
 
         AssignmentGraded assignmentGraded = new AssignmentGraded(assignment);
         assignmentGraded.publishAfterCommit();
-        */
 
-        /** Example 2:  finding and process
-        
-        // if submitted.lectureIduserId exists, use it
-        
-        // ObjectMapper mapper = new ObjectMapper();
-        // Map<Long, Object> studyMap = mapper.convertValue(submitted.getLectureId(), Map.class);
-        // Map<Long, Object> studyMap = mapper.convertValue(submitted.getUserId(), Map.class);
-
-        repository().findById(submitted.get???()).ifPresent(assignment->{
-            
-            assignment // do something
-            repository().save(assignment);
-
-            AssignmentGraded assignmentGraded = new AssignmentGraded(assignment);
-            assignmentGraded.publishAfterCommit();
-
-         });
-        */
 
     }
     //>>> Clean Arch / Port Method

@@ -49,7 +49,9 @@ public class Study {
 
     //<<< Clean Arch / Port Method
     public void submit(SubmitCommand submitCommand) {
-        //implement business logic here:
+        repository().findById(this.getId()).ifPresent(study ->{
+            this.setAssignment(submitCommand.getAssignment());
+        });
 
         Submitted submitted = new Submitted(this);
         submitted.publishAfterCommit();
