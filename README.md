@@ -47,8 +47,8 @@ mvn spring-boot:run
 ```
 - lecturesupport
 ```
- http :8088/assignments id="id"assignment="assignment"submitContent="submitContent"submitScore="submitScore"feedback="feedback"
- http :8088/lectureSuggestions id="id"suggestionContent="SuggestionContent"
+ http :8088/assignments id="id"StudyId := '{"id": 0}'assignment="assignment"submitContent="submitContent"submitScore="submitScore"feedback="feedback"
+ http :8088/lectureSuggestions id="id"UserId := '{"id": 0}'LectureId := '{"id": 0}'suggestionContent="SuggestionContent"
 ```
 
 

@@ -16,7 +16,7 @@
         </v-card-title >        
 
         <v-card-text style="background-color: white;">
-            <StudyId offline label="학습정보 ID" v-model="value.studyId" :editMode="editMode" @change="change"/>
+            <StudyId offline label="studyId" v-model="value.studyId" :editMode="editMode" @change="change"/>
             <String label="과제내용" v-model="value.assignment" :editMode="editMode" :inputUI="''"/>
             <String label="제출내용" v-model="value.submitContent" :editMode="editMode" :inputUI="''"/>
             <String label="제출점수" v-model="value.submitScore" :editMode="editMode" :inputUI="''"/>

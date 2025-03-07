@@ -16,9 +16,9 @@
         </v-card-title >        
 
         <v-card-text style="background-color: white;">
-            <UserId offline label="사용자 ID" v-model="value.userId" :editMode="editMode" @change="change"/>
-            <LectureId offline label="강의 ID" v-model="value.lectureId" :editMode="editMode" @change="change"/>
-            <String label="SuggestionContent" v-model="value.suggestionContent" :editMode="editMode" :inputUI="''"/>
+            <UserId offline label="사용자정보" v-model="value.userId" :editMode="editMode" @change="change"/>
+            <LectureId offline label="강의정보" v-model="value.lectureId" :editMode="editMode" @change="change"/>
+            <String label="추천강의" v-model="value.suggestionContent" :editMode="editMode" :inputUI="''"/>
         </v-card-text>
 
         <v-card-actions style="background-color: white;">
