@@ -93,7 +93,7 @@
             <v-container style="padding:0px;" v-else fluid>
                 <div style="width:100%; position: relative;">
                     <v-img style="width:100%; height:200px;"
-                        src=""
+                        src="/image/main.png"
                     ></v-img>
                     <div class="App-main-text-overlap"></div>
                     <div class="App-sub-text-overlap"></div>
@@ -142,35 +142,35 @@ export default {
                 description: 'Lecture을 관리하는 화면입니다.', 
                 key: 'lectures', 
                 route: '/lectures/lectures',
-                ImageUrl: '',
+                ImageUrl: '/image/video-lecture.svg',
             },
             { 
                 title: '사용자', 
                 description: 'User을 관리하는 화면입니다.', 
                 key: 'users', 
                 route: '/users/users',
-                ImageUrl: '',
+                ImageUrl: '/image/user.svg',
             },
             { 
                 title: '학습정보', 
                 description: 'Study을 관리하는 화면입니다.', 
                 key: 'studies', 
                 route: '/studies/studies',
-                ImageUrl: '',
+                ImageUrl: '/image/scientific.svg',
             },
             { 
                 title: '과제', 
                 description: 'Assignment을 관리하는 화면입니다.', 
                 key: 'assignments', 
                 route: '/lecturesupports/assignments',
-                ImageUrl: '',
+                ImageUrl: '/image/contract.svg',
             },
             { 
                 title: '강의추천', 
                 description: 'LectureSuggestion을 관리하는 화면입니다.', 
                 key: 'lectureSuggestions', 
                 route: '/lecturesupports/lectureSuggestions',
-                ImageUrl: '',
+                ImageUrl: '/image/like.svg',
             },
             
         ],
