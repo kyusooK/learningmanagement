@@ -153,7 +153,7 @@ export default {
             },
             { 
                 title: '학습정보', 
-                description: 'Study을 관리하는 화면입니다.', 
+                description: 'Study을 관리하는 화면입니다.', 
                 key: 'studies', 
                 route: '/studies/studies',
                 ImageUrl: '',
