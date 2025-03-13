@@ -7,6 +7,5 @@ import lombok.Data;
 @Data
 public class SubmitCommand {
 
-    private Long id;
     private String assignment;
 }

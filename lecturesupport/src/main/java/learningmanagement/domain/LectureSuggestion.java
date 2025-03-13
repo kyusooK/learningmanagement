@@ -35,6 +35,7 @@ public class LectureSuggestion {
     @Embedded
     private LectureId lectureId;
 
+    @Lob
     private String suggestionContent;
 
     public static LectureSuggestionRepository repository() {
@@ -45,36 +46,59 @@ public class LectureSuggestion {
     }
 
     //<<< Clean Arch / Port Method
+    // ... existing code ...
     public static void aiBasedSuggestLecture(UserRegistered userRegistered) {
-    // 1. Lecture 서비스에서 모든 강의 정보 가져오기
+        // 1. Lecture 서비스에서 모든 강의 정보 가져오기
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<List<Map>> lectureResponse = restTemplate.exchange(
+        ResponseEntity<Map> lectureResponse = restTemplate.exchange(
             "http://localhost:8082/lectures",
             HttpMethod.GET,
             null,
-            new ParameterizedTypeReference<List<Map>>() {}
+            new ParameterizedTypeReference<Map>() {}
         );
-        List<Map> lectures = lectureResponse.getBody();
+        Map<String, Object> responseBody = lectureResponse.getBody();
         
+        if (responseBody == null || !responseBody.containsKey("_embedded")) {
+            throw new RuntimeException("Invalid response from lecture service");
+        }
+        
+        Map<String, Object> embedded = (Map<String, Object>) responseBody.get("_embedded");
+        if (!embedded.containsKey("lectures")) {
+            throw new RuntimeException("Lecture service response does not contain 'lectures' key");
+        }
+        
+        List<Map> lectures = (List<Map>) embedded.get("lectures");
+        System.out.println("Lectures: " + lectures);
+    
         // 카테고리 목록 추출
         List<String> allCategories = lectures.stream()
-        .map(lecture -> lecture.get("category").toString())
-        .distinct()
-        .collect(Collectors.toList());
-
+            .map(lecture -> lecture.get("category").toString())
+            .distinct()
+            .collect(Collectors.toList());
+        System.out.println("All Categories: " + allCategories);
+    
         // 2. AI를 사용하여 사용자의 관심사에 맞는 카테고리 추천받기
         String recommendedCategories = LecturesupportApplication.applicationContext
             .getBean(AzureAIService.class)
             .suggestLectures(allCategories, userRegistered.getInterest());
-
+        System.out.println("Recommended Categories: " + recommendedCategories);
+    
         // 3. 추천받은 카테고리에 해당하는 강의 찾기
-        List<String> recommendedCategoryList = Arrays.asList(recommendedCategories.split(",\\s*"));
+        // Remove brackets and split by comma, then trim each category
+        String[] categoriesArray = recommendedCategories.replaceAll("[\\[\\]]", "").split(",\\s*");
+        List<String> recommendedCategoryList = Arrays.stream(categoriesArray)
+            .map(String::trim)
+            .collect(Collectors.toList());
+        System.out.println("Recommended Category List: " + recommendedCategoryList);
+    
         List<String> recommendedLectureTitles = lectures.stream()
-            .filter(lecture -> recommendedCategoryList.contains(lecture.get("category").toString()))
+            .filter(lecture -> recommendedCategoryList.contains(lecture.get("category").toString().trim()))
             .map(lecture -> lecture.get("title").toString())
             .limit(3)
             .collect(Collectors.toList());
-        
+    
+        System.out.println("Recommended Lecture Titles: " + recommendedLectureTitles);
+    
         // 4. AI를 사용하여 추천 메시지 생성
         String suggestionContent = LecturesupportApplication.applicationContext
             .getBean(AzureAIService.class)

@@ -149,11 +149,15 @@ public class AzureAIService {
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
         
         try {
+            System.out.println("Sending request to Azure OpenAI API: " + requestBody);
+            
             ResponseEntity<String> response = restTemplate.postForEntity(
                 azureEndpoint + "/openai/deployments/" + deploymentName + "/chat/completions?api-version=2023-05-15",
                 request,
                 String.class
             );
+            
+            System.out.println("Received response from Azure OpenAI API: " + response.getBody());
             
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(response.getBody());

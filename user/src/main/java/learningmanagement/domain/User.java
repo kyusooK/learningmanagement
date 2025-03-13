@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.PostPersist;
 import javax.persistence.Table;
 
@@ -36,12 +37,19 @@ public class User {
 
     private String interest;
 
+    @Lob
     private String suggestionLecture;
 
     @PostPersist
     public void onPostPersist() {
-        UserRegistered userRegistered = new UserRegistered(this);
-        userRegistered.publishAfterCommit();
+        if(this.getIsTutor() != null && this.getIsTutor().equals(true)){
+
+        }else{
+            if(this.getInterest() !=null){
+                UserRegistered userRegistered = new UserRegistered(this);
+                userRegistered.publishAfterCommit();
+            }
+        }
     }
 
     public static UserRepository repository() {
@@ -51,17 +59,17 @@ public class User {
         return userRepository;
     }
 
-    //<<< Clean Arch / Port Method
     public void checkTutor(CheckTutorCommand checkTutorCommand) {
-        //implement business logic here:
+        repository().findById(this.getId()).ifPresent(user ->{
 
-        TutorChecked tutorChecked = new TutorChecked(this);
-        tutorChecked.publishAfterCommit();
+            this.setTutorApprove(checkTutorCommand.getTutorApprove());
+
+            TutorChecked tutorChecked = new TutorChecked(this);
+            tutorChecked.publishAfterCommit();
+
+        });
     }
 
-    //>>> Clean Arch / Port Method
-
-    //<<< Clean Arch / Port Method
     public static void suggestLecture(LectureSuggested lectureSuggested) {
        
         

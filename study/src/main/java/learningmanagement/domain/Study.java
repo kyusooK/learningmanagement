@@ -26,12 +26,14 @@ public class Study {
     @Embedded
     private UserId userId;
 
+    @Lob
     private String assignment;
 
     private Boolean isSubmit;
 
     private Integer submitScore;
 
+    @Lob
     private String feedback;
 
     @PostPersist

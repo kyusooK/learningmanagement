@@ -27,12 +27,14 @@ public class Assignment {
     @Embedded
     private StudyId studyId;
 
+    @Lob
     private String assignment;
 
     private String submitContent;
 
     private Integer submitScore;
 
+    @Lob
     private String feedback;
 
     public static AssignmentRepository repository() {
@@ -50,7 +52,7 @@ public class Assignment {
 
 
         RestTemplate restTemplate = new RestTemplate();
-        String lectureUrl = "http :8082/lectrues" + lectureMap.get("id");
+        String lectureUrl = "http://localhost:8082/lectures/" + lectureMap.get("id");
         ResponseEntity<Map> lectureResponse = restTemplate.getForEntity(lectureUrl, Map.class);
         String assignmentContent = lectureResponse.getBody().get("assignment").toString();
 
