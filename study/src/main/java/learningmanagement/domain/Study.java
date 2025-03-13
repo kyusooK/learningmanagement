@@ -63,9 +63,6 @@ public class Study {
 
     //<<< Clean Arch / Port Method
     public static void updateSubmitScore(AssignmentGraded assignmentGraded) {
-
-        
-        
         ObjectMapper mapper = new ObjectMapper();
         Map<Long, Object> studyMap = mapper.convertValue(assignmentGraded.getStudyId(), Map.class);
 

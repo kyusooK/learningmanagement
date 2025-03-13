@@ -67,11 +67,7 @@ public class Assignment {
             assignment.getSubmitContent()
         );
         
-        try {
-            assignment.setSubmitScore(Integer.parseInt(evaluation.get("score")));
-        } catch (NumberFormatException e) {
-            assignment.setSubmitScore(0);  // 변환 실패시 기본값 0
-        }
+        assignment.setSubmitScore(Integer.parseInt(evaluation.get("score")));
         assignment.setFeedback(evaluation.get("feedback"));
         assignment.setStudyId(new StudyId(submitted.getId()));
         

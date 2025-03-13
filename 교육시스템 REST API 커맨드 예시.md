@@ -3,15 +3,18 @@
 ```
 http :8088/users name=김강사 phoneNumber=010-xxxx-xxxx email=edu1@gmail.com isTutor=true
 http PUT :8088/users/1/checktutor tutorApprove=true
-
-http :8088/users name=나학생 phoneNumber=010-xxxx-xxxx email=stu1@gmail.com interest=수학
 ```
 
 // 강의 업로드
 ```
 http :8088/lectures userId:='{"id":1}' title="수학의정석" category="수학" assignment="집합의 정의에 대해 작성하시오" specifics="이 강의는 수학의 기본 개념을 다룹니다."
 http :8088/lectures userId:='{"id":1}' title="고등학교 수학 I" category="수학" assignment="이차방정식의 해를 구하는 방법을 설명하시오" specifics="이 강의는 이차방정식의 기본 개념과 해법을 다룹니다."
-http :8088/lectures userId:='{"id":1}' title="고등학교 수학 II" category="수학" assignment="삼각함수의 그래프를 그리는 과정을 설명하시오" specifics="이 강의는 삼각함수의 정의와 그래프 해석을 포함합니다."
+http :8088/lectures userId:='{"id":1}' title="고등학교 수학 II" category="수학" assignment="삼각함수의 그래프를 그리는 과정을 설명하시오" specifics="이 강의는 삼각함수의 정의와 그래프 해석을 포함합니다"
+```
+
+// 학생 등록
+```
+http :8088/users name=나학생 phoneNumber=010-xxxx-xxxx email=stu1@gmail.com interest=수학
 ```
 
 // 수강신청

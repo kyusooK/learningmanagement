@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: lecture
-          image: "username/lecture:latest"
+          image: "user11registry.azurecr.io/lecture:0801"
           ports:
             - containerPort: 8080
           readinessProbe:
